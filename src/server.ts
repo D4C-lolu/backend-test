@@ -11,7 +11,7 @@ const PORT = config().port;
 
 const app = express();
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(
@@ -21,7 +21,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,  // if true only transmit cookie over https
+      secure: false, // if true only transmit cookie over https
       httpOnly: false, // if true prevent client side JS from reading the cookie
       maxAge: config().auth.sessionTTL, // session max age in milliseconds
     },
@@ -30,17 +30,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(routes);
+app.use("/api/v1", routes);
 
 const server = http.createServer(app);
 
-const startServer = async (): Promise<void> => {     
+const startServer = async (): Promise<void> => {
   await connectToDatabase();
   server.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}}`);
   });
-
-
-}; 
+};
 
 startServer();

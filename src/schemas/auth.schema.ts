@@ -1,5 +1,4 @@
 import { z, TypeOf } from "zod";
-import { UserRole } from "../types";
 
 const signUpSchema = z.object({
   body: z
@@ -22,9 +21,6 @@ const signUpSchema = z.object({
         .min(6, "Password is too short - should be min 8 chars"),
       passwordConfirmation: z.string({
         required_error: "Password confirmation is required",
-      }),
-      role: z.nativeEnum(UserRole, {
-        required_error: "Role is required",
       }),
     })
     .refine((data) => data.password === data.passwordConfirmation, {

@@ -7,13 +7,13 @@ import { logInSchema, signUpSchema } from "../schemas/auth.schema";
 const router = express.Router();
 
 router.post(
-  "/auth/signup",
+  "/signup",
   validateResource(signUpSchema),
   AuthController.signUp
 );
 
 router.post(
-  "/auth/signup",
+  "/login",
   validateResource(signUpSchema),
   AuthController.signUp
 );

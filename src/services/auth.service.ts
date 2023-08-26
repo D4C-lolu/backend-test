@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import bcrypt from "bcrypt";
-import User, { UserAttributes, UserCreationAttributes } from "../models/user.model";
+import User, { UserAttributes } from "../models/user.model";
 import config from "../config";
+import { UserRole } from "../types";
+import { SignUpInput } from "../schemas/auth.schema";
 const bcryptSalt = config().auth.bcryptSalt;
 
 class AuthService {
 
-  static async  signUp(userData: UserCreationAttributes): Promise<Partial<UserAttributes> | null> {
+  static async  signUp(userData:  SignUpInput ): Promise<Partial<UserAttributes> | null> {
     try {
      
       const hashedPassword = await bcrypt.hash(userData.password, bcryptSalt);
 
       const newUser = await User.create({
         ...userData,
+        role: UserRole.USER,
         password: hashedPassword,
       });
 
