@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { dbInstance } from "../db/connectToDB";
-import User from "./userModel";
+import User from "./user.model";
 
 
 interface FolderAttributes {

@@ -77,4 +77,5 @@ User.init(
   }
 );
 
+export { UserAttributes, UserCreationAttributes };
 export default User;

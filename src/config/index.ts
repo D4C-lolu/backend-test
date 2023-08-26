@@ -10,5 +10,17 @@ export default ()=>({
     password :process.env.DB_PASSWORD!,
     dbName : process.env.DB_NAME!,
     host: process.env.DB_HOST!,
-  }
+  },
+  logDir : process.env.LOG_DIR!,
+  maxAllowableRate : parseInt(process.env.MAX_ALLOWABLE_RATE!, 10),
+  auth : {
+    sessionSecret: process.env.SESSION_SECRET!,
+    sessionTTL : parseInt(process.env.SESSION_TTL!, 10),
+    bcryptSalt : parseInt(process.env.BCRYPT_SALT_ROUNDS!, 10),
+  }, 
+  redis : {
+    host : process.env.REDIS_HOST!,
+    port : parseInt(process.env.REDIS_PORT!, 10),
+    password : process.env.REDIS_PASSWORD!,
+  },
 });

@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { dbInstance } from "../db/connectToDB";
-import User from "./userModel";
-import File from "./fileModel";
+import User from "./user.model";
+import File from "./file.model";
 
 
 
