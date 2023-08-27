@@ -63,3 +63,4 @@ Folder.belongsTo(User);
 
 
 export default Folder;
+export { FolderAttributes, FolderCreationAttributes };

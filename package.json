@@ -26,6 +26,7 @@
     "pg-hstore": "^2.3.4",
     "redis": "^4.6.8",
     "sequelize": "^6.32.1",
+    "uuid": "^9.0.0",
     "winston": "^3.10.0",
     "zod": "^3.22.2"
   },
@@ -35,6 +36,7 @@
     "@types/express-session": "^1.17.7",
     "@types/passport": "^1.0.12",
     "@types/passport-local": "^1.0.35",
+    "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
     "dotenv": "^16.3.1",

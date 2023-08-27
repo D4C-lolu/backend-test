@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request } from "express";
 import http from "http";
 import config from "./config";
 import { connectToDatabase } from "./db/connectToDB";
@@ -6,6 +6,7 @@ import session from "express-session";
 import passport from "./utils/passportStrategy";
 import { redisStore } from "./utils/redisStore";
 import routes from "./routes";
+import { v4 as uuidv4 } from "uuid";
 
 const PORT = config().port;
 
@@ -17,9 +18,14 @@ app.use(express.json());
 app.use(
   session({
     store: redisStore,
+    genid: (req:Request) => {
+      console.log(req.sessionID);
+      return uuidv4();
+    },
+    name: "sid",
     secret: config().auth.sessionSecret,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
       secure: false, // if true only transmit cookie over https
       httpOnly: false, // if true prevent client side JS from reading the cookie
@@ -29,6 +35,13 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+//TODO: remove this
+app.use((req, res, next) => {
+  // logger setup etc
+  console.log("SessionID", req.sessionID);
+  next();
+});
 
 app.use("/api/v1", routes);
 

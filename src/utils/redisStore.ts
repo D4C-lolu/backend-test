@@ -23,4 +23,3 @@ const redisStore = new RedisStore({
 
 export { redisStore };
 
-//redis://default:yuHOjiJufz94l4MJlOC6uIGsTmukDuUu@redis-11521.c12.us-east-1-4.ec2.cloud.redislabs.com:11521
