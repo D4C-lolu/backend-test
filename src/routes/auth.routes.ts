@@ -14,12 +14,6 @@ router.post(
 
 router.post(
   "/login",
-  validateResource(signUpSchema),
-  AuthController.signUp
-);
-
-router.post(
-  "/auth/login",
   validateResource(logInSchema),
   AuthController.login
 );

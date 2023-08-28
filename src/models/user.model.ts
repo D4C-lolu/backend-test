@@ -1,4 +1,5 @@
-import { DataTypes, Model, Optional } from "sequelize"; 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { DataTypes, Model, Optional} from "sequelize"; 
 import { UserRole } from "../types"; 
 import { dbInstance } from "../db/connectToDB";
 
@@ -14,6 +15,8 @@ interface UserAttributes {
 interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+ 
+
   public id!: number;
   public firstname!: string;
   public lastname!: string;
@@ -67,15 +70,17 @@ User.init(
       values: Object.values(UserRole),
       validate: {
         isIn: [Object.values(UserRole)],
-        defaultValue : UserRole.USER
       },
+      defaultValue : UserRole.USER
     },
   },
   {
     sequelize: dbInstance,
     modelName: "user",
   }
+
 );
+
 
 export { UserAttributes, UserCreationAttributes };
 export default User;

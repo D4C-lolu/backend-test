@@ -9,7 +9,6 @@ interface FileReviewAttributes {
   id: number;
   fileId: number;
   userId: number;
-  timestamp: Date;
 }
 
 interface FileReviewCreationAttributes extends Optional<FileReviewAttributes, "id"> {}
@@ -18,7 +17,6 @@ class FileReview extends Model<FileReviewAttributes, FileReviewCreationAttribute
   public id!: number;
   public fileId!: number;
   public userId!: number;
-  public timestamp!: Date;
 }
 
 FileReview.init(
@@ -44,11 +42,6 @@ FileReview.init(
         key: "id",
       },
     },
-    timestamp: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    }
   },
   { sequelize: dbInstance, 
     modelName: "file_review",
@@ -67,3 +60,4 @@ FileReview.belongsTo(User);
 FileReview.belongsTo(File);
 
 export default FileReview;
+export { FileReviewAttributes, FileReviewCreationAttributes };

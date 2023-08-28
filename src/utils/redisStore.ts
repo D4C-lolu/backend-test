@@ -1,6 +1,7 @@
 import RedisStore from "connect-redis";
 import {createClient} from "redis";
 import config from "../config";
+import logger from "./logger";
 
 
 const password = config().redis.password;
@@ -14,7 +15,7 @@ const redisClient = createClient({
     port
   }
 });
-redisClient.connect().catch(console.error);
+redisClient.connect().catch(logger.error);
 
 // Initialize store.
 const redisStore = new RedisStore({

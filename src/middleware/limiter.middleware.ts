@@ -29,21 +29,9 @@ const createRateLimiter = (message: string) => {
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   });
 };
-
-const loginLimiter = createRateLimiter(
-  "Too many login attempts from this IP, please try again after a 60 second pause"
+const  rateLimiter = createRateLimiter(
+  "Too many requests from this IP, please try again after a 60 second pause"
 );
 
-const signupLimiter = createRateLimiter(
-  "Too many signup attempts from this IP, please try again after a 60 second pause"
-);
 
-const fileUploadLimiter = createRateLimiter(
-  "Too many file upload attempts from this IP, please try again after a 60 second pause"
-);
-
-const fileDownloadLimiter = createRateLimiter(
-  "Too many file download attempts from this IP, please try again after a 60 second pause"
-);
-
-export { loginLimiter, signupLimiter, fileUploadLimiter, fileDownloadLimiter };
+export default rateLimiter;

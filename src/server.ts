@@ -7,19 +7,25 @@ import passport from "./utils/passportStrategy";
 import { redisStore } from "./utils/redisStore";
 import routes from "./routes";
 import { v4 as uuidv4 } from "uuid";
+import logRequest from "./middleware/logRequest.middleware";
+import rateLimiter from "./middleware/limiter.middleware";
+import logger from "./utils/logger";
 
 const PORT = config().port;
 
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+
+app.use(express.urlencoded({ limit: "200mb", extended: true }));
 app.use(express.json());
+
+app.use(logRequest);
 
 app.use(
   session({
     store: redisStore,
     genid: (req:Request) => {
-      console.log(req.sessionID);
+      logger.info(req.sessionID);
       return uuidv4();
     },
     name: "sid",
@@ -36,10 +42,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(rateLimiter);
+
 //TODO: remove this
 app.use((req, res, next) => {
   // logger setup etc
-  console.log("SessionID", req.sessionID);
+  logger.info("SessionID", req.sessionID? req.sessionID : "no sessionID");
   next();
 });
 
@@ -50,7 +58,7 @@ const server = http.createServer(app);
 const startServer = async (): Promise<void> => {
   await connectToDatabase();
   server.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}}`);
+    logger.info(`Server is listening on port ${PORT}}`);
   });
 };
 

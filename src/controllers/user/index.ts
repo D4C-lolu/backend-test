@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import UserService from "../../services/user.service";
+import { UpdateUserRoleInput } from "../../schemas/auth.schema";
 
 
 class UserController {
@@ -24,6 +25,26 @@ class UserController {
     try {
       const users = await UserService.getAllUsers();
       res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  static async updateUserRole(req: Request<unknown, unknown, UpdateUserRoleInput>, res: Response) {
+    const userId = req.body.id;
+    const role = req.body.role;
+
+    const id = typeof userId === "string" ? parseInt(userId, 10) : userId; 
+    try {
+      const user = await UserService.updateUserRole({ id, role });
+
+      if (user) {
+        
+        UserService.updateUserRole({ id, role });
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }

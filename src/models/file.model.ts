@@ -11,6 +11,10 @@ interface FileAttributes {
   folderId: number;
   status: FileStatus;
   fileOwner: number;
+  key: string;
+  location: string;
+  filetype: string;
+  filesize: number;
 }
 
 interface FileCreationAttributes extends Optional<FileAttributes, "id"> {}
@@ -21,6 +25,10 @@ class File extends Model<FileAttributes, FileCreationAttributes> implements File
   public folderId!: number;
   public status!: FileStatus;
   public fileOwner!: number;
+  public key!: string;
+  public location!: string;
+  public filetype!: string;
+  public filesize!: number;
 }
 
 File.init(
@@ -48,14 +56,42 @@ File.init(
         key: "id",
       },
     },
+    filesize: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 0
+      },
+    },
     status: {
       type: DataTypes.ENUM,
       allowNull: false,
       values: Object.values(FileStatus),
       validate: {
         isIn: [Object.values(FileStatus)],
-        defaultValue : FileStatus.SAFE
+        
       },
+      defaultValue : FileStatus.SAFE
+    },
+    key: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    location: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    filetype: {
+      type: DataTypes.STRING(32),
+      allowNull: false,
+      validate: {
+        len: {
+          args: [2, 32],
+          msg: "File type must be 1 - 32 characters long"
+        }
+      }
     },
     fileOwner: {
       type: DataTypes.INTEGER,
@@ -66,7 +102,8 @@ File.init(
       },
     },
   },
-  { sequelize: dbInstance, 
+  { 
+    sequelize: dbInstance, 
     modelName: "file",
     indexes: [
       {
@@ -77,6 +114,7 @@ File.init(
   }
 );
 
+
 File.belongsTo(User);
 User.hasMany(File);
 
@@ -84,3 +122,4 @@ File.belongsTo(Folder);
 Folder.hasMany(File);
 
 export default File;
+export {  FileAttributes , FileCreationAttributes };

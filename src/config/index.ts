@@ -23,4 +23,11 @@ export default ()=>({
     port : parseInt(process.env.REDIS_PORT!, 10),
     password : process.env.REDIS_PASSWORD!,
   },
+  aws : {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+    bucketName: process.env.AWS_BUCKET_NAME!,
+  },
+  adminPassword : process.env.ADMIN_PASSWORD!,
+  adminEmail: process.env.ADMIN_EMAIL!,
 });

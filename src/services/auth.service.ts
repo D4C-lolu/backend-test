@@ -4,6 +4,8 @@ import User, { UserAttributes } from "../models/user.model";
 import config from "../config";
 import { UserRole } from "../types";
 import { SignUpInput } from "../schemas/auth.schema";
+import logger from "../utils/logger";
+import FolderService from "./folder.service";
 const bcryptSalt = config().auth.bcryptSalt;
 
 class AuthService {
@@ -18,12 +20,23 @@ class AuthService {
         role: UserRole.USER,
         password: hashedPassword,
       });
+      
+      if (!newUser) {
+        logger.info("Error creating user");
+        return null;
+      }
+
+      await FolderService.createFolder({
+        foldername: `root-${newUser.id.toString()}`,
+        folderOwner: newUser.id,
+        parentId: undefined
+      });
 
       const { password:_, ...user } = newUser.get();
 
       return user;
     } catch (error) {
-      console.error("Error signing up:", error);
+      logger.error("Error signing up:", error);
       return null;
     }
   }
@@ -34,14 +47,14 @@ class AuthService {
       const user = await User.findOne({ where: { email } });
 
       if (!user) {
-        console.log("User not found");
+        logger.info("User not found");
         return null;
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        console.log("Incorrect password");
+        logger.info("Incorrect password");
         return null;
       }
 
@@ -49,7 +62,7 @@ class AuthService {
 
       return userObj;
     } catch (error) {
-      console.error("Error logging in:", error);
+      logger.error("Error logging in:", error);
       return null;
     }
   }

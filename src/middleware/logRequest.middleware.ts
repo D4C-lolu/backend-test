@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../utils/logger";
 
-const formatLog = (
+const logRequest = (
   request: Request,
   response: Response,
   next: NextFunction
@@ -22,4 +22,4 @@ const formatLog = (
   next();
 };
 
-export default formatLog;
+export default logRequest;

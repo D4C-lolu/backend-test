@@ -1,4 +1,5 @@
 import { z, TypeOf } from "zod";
+import { UserRole } from "../types";
 
 const signUpSchema = z.object({
   body: z
@@ -44,6 +45,18 @@ const logInSchema = z.object({
     }),
 });
 
+
+const updateUserRoleSchema = z.object({
+  body: z
+    .object({
+      id: z.number({required_error: "User ID is required"}),
+      role:z.nativeEnum(UserRole, {required_error: "User role is required"})
+    }), 
+});
+
+
+
 export type SignUpInput = TypeOf<typeof signUpSchema>["body"];
 export type LogInInput = TypeOf<typeof logInSchema>["body"];
-export {logInSchema, signUpSchema };
+export type UpdateUserRoleInput = TypeOf<typeof updateUserRoleSchema>["body"];
+export {logInSchema, signUpSchema , updateUserRoleSchema};

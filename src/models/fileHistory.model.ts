@@ -11,6 +11,7 @@ interface FileHistoryAttributes {
   userId: number;
   timestamp: Date;
   action : FileAction;
+  attributeName: string;
   oldValue : string;
   newValue : string;
 }
@@ -23,6 +24,7 @@ class FileHistory extends Model<FileHistoryAttributes, FileHistoryCreationAttrib
   public userId!: number;
   public timestamp!: Date;
   public action!: FileAction;
+  public attributeName!: string;
   public oldValue!: string;
   public newValue!: string;
 }
@@ -62,6 +64,9 @@ FileHistory.init(
       validate: {
         isIn: [Object.values(FileAction)],
       },
+    },
+    attributeName: {
+      type: DataTypes.STRING,
     },
     oldValue: {
       type: DataTypes.STRING,

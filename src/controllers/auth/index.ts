@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import AuthService from "../../services/auth.service";
 import { LogInInput, SignUpInput } from "../../schemas/auth.schema";
 import passport from "../../utils/passportStrategy";
+import logger from "../../utils/logger";
 
 class AuthController {
   static async signUp(
@@ -27,7 +28,7 @@ class AuthController {
     res: Response,
     next: NextFunction
   ) {
-    passport.authenticate("local", (error, user) => {
+    passport.authenticate("local", (error: unknown, user: Express.User) => {
       if (error) {
         return res.status(500).json({ message: "Authentication error." });
       }
@@ -36,7 +37,6 @@ class AuthController {
         return res.status(401).json({ message: "Invalid credentials." });
       }
 
-      // Successful authentication, log in the user
       req.login(user, (loginError) => {
         if (loginError) {
           return res.status(500).json({ message: "Login error." });

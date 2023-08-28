@@ -9,5 +9,6 @@ const router = express.Router();
 router.get("/:id",isUser, UserController.getUserById);
 router.get("/", isUser, UserController.getAllUsers);
 router.delete("/:id",isUser, isAdmin,UserController.deleteUser);
+router.put("/",isUser, isAdmin, UserController.updateUserRole);
 
 export default router;

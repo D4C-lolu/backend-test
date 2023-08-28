@@ -6,8 +6,8 @@ import User from "./user.model";
 interface FolderAttributes {
   id: number;
   foldername: string;
-  path: string;
   folderOwner: number;
+  parentId?: number;
 }
 
 interface FolderCreationAttributes extends Optional<FolderAttributes, "id"> {}
@@ -15,8 +15,8 @@ interface FolderCreationAttributes extends Optional<FolderAttributes, "id"> {}
 class Folder extends Model<FolderAttributes, FolderCreationAttributes> implements FolderAttributes {
   public id!: number;
   public foldername!: string;
-  public path!: string;
   public folderOwner!: number;
+  public parentId?: number;
 }
 
 Folder.init(
@@ -36,7 +36,13 @@ Folder.init(
         }
       }
     },
-    path: { type: DataTypes.STRING, allowNull: false },
+    parentId : {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Folder,
+        key: "id",
+      },
+    },
     folderOwner: {
       type: DataTypes.INTEGER,
       references: {
@@ -45,21 +51,23 @@ Folder.init(
       },
     },
   },
-  { sequelize: dbInstance, 
-    modelName: "folder"
+  {
+    modelName: "folder",
+    indexes: [
+      {
+        unique: true,
+        fields: ["parentId", "foldername", "folderOwner"]
+      }
+    ],
+    sequelize: dbInstance,  
   }
 );
 
-const folderRelationship = dbInstance.define("folder_relationship", {});
-
-Folder.belongsToMany(Folder, { through: folderRelationship, as: "child", foreignKey: "childId" });
-Folder.belongsToMany(Folder, { through: folderRelationship, as: "parent", foreignKey: "parentId" });
+Folder.belongsTo(Folder, { foreignKey: "parentId" });
 
 User.hasMany(Folder);
 
 Folder.belongsTo(User);
-
-
 
 
 export default Folder;
